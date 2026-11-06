@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Toca el color</title>
+<style>
+body{background:#FFF6D9; text-align:center; font-family:Arial; margin:0; padding:10px;}
+#dibujo{font-size:90px;}
+#texto{font-size:24px; font-weight:bold; background:white; padding:10px; border-radius:15px;}
+.circulo{width:120px; height:120px; border-radius:50%; display:inline-block; margin:10px; border:5px solid white;}
+#rojo{background:red;}
+#azul{background:blue;}
+#amarillo{background:yellow;}
+#boton{font-size:22px; background:#FFD93D; border:none; padding:12px 20px; border-radius:20px;}
+</style>
+</head>
+<body>
+
+<h1>🎨 TOCA EL COLOR 🎨</h1>
+<div id="dibujo">🍎</div>
+<div id="texto">Toca el ROJO</div>
+<br>
+<button id="boton" onclick="hablar()">🔊 ESCUCHAR</button>
+<br><br>
+
+<div class="circulo" id="rojo" onclick="revisar('rojo')"></div>
+<div class="circulo" id="azul" onclick="revisar('azul')"></div>
+<div class="circulo" id="amarillo" onclick="revisar('amarillo')"></div>
+
+<div id="mensaje" style="font-size:28px; margin-top:15px;"></div>
+
+<script>
+var colores = ["rojo", "azul", "amarillo", "rojo", "azul", "amarillo"];
+var nombres = ["ROJO", "AZUL", "AMARILLO", "ROJO", "AZUL", "AMARILLO"];
+var dibujos = ["🍎", "💧", "☀️", "🍓", "🐳", "🍌"];
+var turno = 0;
+
+function hablar(){
+  var voz = new SpeechSynthesisUtterance("Toca el color " + nombres[turno]);
+  voz.lang = "es-ES";
+  speechSynthesis.speak(voz);
+}
+
+function revisar(colorTocado){
+  var mensaje = document.getElementById("mensaje");
+  if(colorTocado == colores[turno]){
+    mensaje.innerHTML = "¡MUY BIEN! 🎉👏";
+    turno = turno + 1;
+    if(turno >= colores.length){
+      setTimeout(function(){
+        document.body.innerHTML = "<h1>🏆 ¡LO LOGRASTE! 🏆</h1><p style='font-size:90px'>🌈🎉😍</p><h2>¡Eres un genio de los colores!</h2><button onclick='location.reload()' style='font-size:24px; padding:15px; border-radius:20px; background:#7ED957; border:none;'>🔄 JUGAR OTRA VEZ</button>";
+      }, 1000);
+    } else {
+      setTimeout(function(){
+        document.getElementById("dibujo").innerHTML = dibujos[turno];
+        document.getElementById("texto").innerHTML = "Toca el " + nombres[turno];
+        mensaje.innerHTML = "";
+        hablar();
+      }, 1000);
+    }
+  } else {
+    mensaje.innerHTML = "¡Inténtalo otra vez! 💪";
+    hablar();
+  }
+}
+</script>
+</body>
+</html>
